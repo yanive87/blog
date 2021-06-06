@@ -1,6 +1,11 @@
 <?php
 
+use App\Models\Category;
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,15 +18,42 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('posts');
+Route::get('/',
+    function () {
+//    \Illuminate\Support\Facades\DB::listen(function ($query){
+//logger($query->sql,$query->bindings);
+//    });
+    return view('posts',[
+
+        'posts'=> Post::latest('published_at')->get()
+    ]);
+})->where('post','[A-z_\-]+');
+
+Route::get('posts/{post:slug}', function (Post $post) {
+    //ddd($slug);
+    return view('post',[
+        'post'=>$post
+    ]);
 });
 
-Route::get('posts/{post}', function ($slug) {
-   // return $slug;
-   $path=__DIR__ . "/../resources/posts/$slug.html";
-   $post=file_get_contents($path);
-    return view('post',[
-        'post'=> $post 
+
+Route::get('categories/{category:slug}', function (Category $category) {
+    //ddd($slug);
+    return view('posts',[
+        'posts'=> $category->posts
     ]);
+});
+
+Route::get('authors/{author}', function (User $author) {
+    //dd($author);
+    return view('posts',[
+        'posts'=> $author->posts
+    ]);
+});
+
+
+
+Route::get('test/{post}', function ($slug) {
+    //ddd($slug);
+    return view('test');
 });

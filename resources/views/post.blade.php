@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html>
 
-<title>My post</title>
+<x-layout>
+<h1>
+    {{ $post->title  }}
+    <p>By <a href=#>{{ $post->author->name }}</a>  on <a href="/categories/{{ $post->category->slug}}">{{ $post->category->name }}</a></p>
+</h1>
+<div>
+    {!! $post->body  !!}
 
-<link rel="stylesheet" href="/app.css" >
-
-
-
-<body>
-
-
-<p>
-<?= $post; ?>
-</p>
+</div>
 
 <a href="/">Go Back!</a>
-</body>
-</html>
+
+
+</x-layout>

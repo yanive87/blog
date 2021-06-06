@@ -1,44 +1,21 @@
 <?php
 
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\File;
-
-class Post
+class Post extends Model
 {
+    use HasFactory;
+    protected $with=['category','author'];
 
-
-    public static function find($slug)
+    public function category()
     {
-
-
-        if(!file_exists($path=resource_path("posts/$slug.html")))
-        {
-            //ddd($path);
-            //abort(404);
-           // return redirect('/');
-            throw new ModelNotFoundException();
-
-        }
-
-        return  cache()->remember('posts/{$slug1}',1,function() use ($path){
-            return file_get_contents($path);
-        });
+        return $this->belongsTo(Category::class);
     }
-
-    public static function all()
+    public function author()
     {
-        $files= File::files(resource_path("posts"));
-
-        return array_map(function($file){
-            return $file->getContents();
-        },$files);
-
-
-
-        return $files;
+        return $this->belongsTo(User::class,'user_id');
     }
 }

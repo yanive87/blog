@@ -1,22 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>My blog</title>
 
-<link rel="stylesheet" href="/app.css">
+<x-layout>
+@foreach ($posts as $post)
 
-</head>
-<body>
+    <article class="{{$loop->even ? 'mb-6': ''}}">
+       <h1>
+           <a href="/posts/{{ $post->slug }}">
+               {{ $post->title  }}
+           </a>
+           <p>By <a href="/authors/{{ $post->author->id}}">{{ $post->author->name }}</a>  on <a href="/categories/{{ $post->category->slug}}">{{ $post->category->name }}</a></p>
 
-    <?php foreach ($posts as $post):  ?>
-        <article>
+       </h1>
+        <div>
+            {{ $post->excerpt  }}
 
-            <?= $post; ?>
+        </div>
+    </article>
+@endforeach
 
-        </article>
+</x-layout>
 
-    <?php endforeach;  ?>
-
-
-</body>
-</html>
