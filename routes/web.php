@@ -25,7 +25,7 @@ Route::get('/',
 //    });
     return view('posts',[
 
-        'posts'=> Post::latest('published_at')->get()
+        'posts'=> Post::latest('published_at'):wq:q->get()
     ]);
 })->where('post','[A-z_\-]+');
 
