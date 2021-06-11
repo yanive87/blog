@@ -1,21 +1,19 @@
 
 <x-layout>
-@foreach ($posts as $post)
 
-    <article class="{{$loop->even ? 'mb-6': ''}}">
-       <h1>
-           <a href="/posts/{{ $post->slug }}">
-               {{ $post->title  }}
-           </a>
-           <p>By <a href="/authors/{{ $post->author->id}}">{{ $post->author->name }}</a>  on <a href="/categories/{{ $post->category->slug}}">{{ $post->category->name }}</a></p>
+   @include('_post-header')
 
-       </h1>
-        <div>
-            {{ $post->excerpt  }}
+    <main class="max-w-6xl mx-auto mt-6 lg:mt-20 space-y-6">
+        @if ($posts->count())
 
-        </div>
-    </article>
-@endforeach
+            <x-posts-grid :posts="$posts" />
+            {{$posts->links()}}
+        @else
+            <p>No post yet!</p>
+        @endif
+
+    </main>
+
 
 </x-layout>
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
@@ -18,42 +19,35 @@ use Spatie\YamlFrontMatter\YamlFrontMatter;
 |
 */
 
-Route::get('/',
-    function () {
-//    \Illuminate\Support\Facades\DB::listen(function ($query){
-//logger($query->sql,$query->bindings);
-//    });
-    return view('posts',[
+Route::get('/', [PostController::class,'index'])->where('post','[A-z_\-]+');
 
-        'posts'=> Post::latest('published_at')->get()
-    ]);
-})->where('post','[A-z_\-]+');
-
-Route::get('posts/{post:slug}', function (Post $post) {
-    //ddd($slug);
-    return view('post',[
-        'post'=>$post
-    ]);
-});
+Route::get('posts/{post:slug}',[PostController::class,'show']);
 
 
 Route::get('categories/{category:slug}', function (Category $category) {
     //ddd($slug);
     return view('posts',[
-        'posts'=> $category->posts
+        'posts'=> $category->posts,
+        'currentCategory'=> $category,
+        'categories'=> Category::all()
     ]);
 });
 
 Route::get('authors/{author}', function (User $author) {
     //dd($author);
     return view('posts',[
-        'posts'=> $author->posts
+        'posts'=> $author->posts,
+        'categories'=> Category::all()
     ]);
 });
 
+////test
 
-
-Route::get('test/{post}', function ($slug) {
+Route::get('test/', function () {
     //ddd($slug);
     return view('test');
+});
+Route::get('phpinfo/', function () {
+    //ddd($slug);
+    return view('phpinfo');
 });

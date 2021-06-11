@@ -10,6 +10,20 @@ class Post extends Model
     use HasFactory;
     protected $with=['category','author'];
 
+    public function scopeFilter($query,array $filters)
+    {
+        $query->when($filters['search'] ?? false,function ( $query,$search){
+        $query
+            ->where('title', 'like' , '%'.request('search').'%' )
+            ->orwhere('body', 'like' , '%'.request('search').'%' );
+        });
+//        if($filters['search'] ?? false )
+//        {
+//            $query
+//                ->where('title', 'like' , '%'.request('search').'%' )
+//                ->orwhere('body', 'like' , '%'.request('search').'%' );
+//        }
+    }
     public function category()
     {
         return $this->belongsTo(Category::class);
